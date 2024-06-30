@@ -1,0 +1,30 @@
+Git commands:
+
+git --version							//show your git version
+git config --global user.name "w3schools-test"		//set user name 
+git config --global user.email "test@w3schools.com"	//set email address
+git init								//create local repository
+git remote add origin URL					//add a remote for repository
+git status					//show status of tracked-untracked files
+git add filename / git add .			//add files to the staging area
+git commit -m "First release of Hello World!"	//perform a commit with message
+git log						//view the history of commits for a repository
+git branch branchname			//create a new branch
+git branch					//to see all local branches
+git branch -a               				//to see all local and remote branches
+git branch -r					//to see all remote branches
+git checkout branchname			//switch to another branch
+git checkout -b branchname			//create a new branch and switch to it
+git merge branchname				//merge current branch with specified branch
+git branch -D branchname			//delete branch
+git fetch origin					//gets all changes history of tracked branch/repo
+git diff origin/master		    //show difference between our local master and origin/master
+git pull origin branchname   	 //pull all changes from a remote repo into the branch you are working
+git push origin branchname     //push changes to our local repo to remote repo
+git clone URL			//make copy of a repo on our local repo to working on it
+git push origin -d branchname    	//delete a remote branch
+
+
+
+
+
