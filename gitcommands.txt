@@ -23,8 +23,3 @@ git pull origin branchname   	 //pull all changes from a remote repo into the br
 git push origin branchname     //push changes to our local repo to remote repo
 git clone URL			//make copy of a repo on our local repo to working on it
 git push origin -d branchname    	//delete a remote branch
-
-
-
-
-
