@@ -17,7 +17,7 @@ git checkout branchname			//switch to another branch
 git checkout -b branchname			//create a new branch and switch to it
 git merge branchname				//merge current branch with specified branch
 git branch -D branchname			//delete branch
-git fetch origin					//gets all changes history of tracked branch/repo
+git fetch origin branchname				//gets all changes history of tracked branch/repo
 git diff origin/master		    //show difference between our local master and origin/master
 git pull origin branchname   	 //pull all changes from a remote repo into the branch you are working
 git push origin branchname     //push changes to our local repo to remote repo
