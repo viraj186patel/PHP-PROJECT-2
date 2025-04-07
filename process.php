@@ -1,64 +1,75 @@
 <?php
-	session_start();
+    session_start();
+    require_once './stripe-php/init.php';
+    require_once './functions/database_functions.php';
 
-	$_SESSION['err'] = 1;
-	foreach($_POST as $key => $value){
-		if(trim($value) == ''){
-			$_SESSION['err'] = 0;
-		}
-		break;
-	}
+    // Set Stripe secret key
+    \Stripe\Stripe::setApiKey('sk_test_51R9ldHPJFE4SlzeJ2Z2APBWdE2cpxmXGEYsBgViEeO7P7dXyAlQqwL08hkSu0VIYpjUeQMecxsgdjr2wCfg4UfXk00HLhEdWIE');
 
-	if($_SESSION['err'] == 0){
-		header("Location: purchase.php");
-	} else {
-		unset($_SESSION['err']);
-	}
+    // Check if Stripe session_id is present
+    if (!isset($_GET['session_id'])) {
+        echo "<h2>Payment Failed!</h2>";
+        exit;
+    }
 
-	require_once "./functions/database_functions.php";
-	// print out header here
-	$title = "Purchase Process";
-	require "./template/header.php";
-	// connect database
-	$conn = db_connect();
-	extract($_SESSION['ship']);
+    $conn = db_connect();
 
-	// validate post section
-	$card_number = $_POST['card_number'];
-	$card_PID = $_POST['card_PID'];
-	$card_expire = strtotime($_POST['card_expire']);
-	$card_owner = $_POST['card_owner'];
+    // Fetch session details from Stripe
+    $session_id = $_GET['session_id'];
+    $session    = \Stripe\Checkout\Session::retrieve($session_id);
 
-	// find customer
-	$customerid = getCustomerId($name, $address, $city, $zip_code, $country);
-	if($customerid == null) {
-		// insert customer into database and return customerid
-		$customerid = setCustomerId($name, $address, $city, $zip_code, $country);
-	}
-	$date = date("Y-m-d H:i:s");
-	insertIntoOrder($conn, $customerid, $_SESSION['total_price'], $date, $name, $address, $city, $zip_code, $country);
+    // Get payment details
+    $stripe_payment_id = $session->payment_intent;
+    $amount = $session->amount_total / 100; 
+    $currency = strtoupper($session->currency);
+    $payment_status = $session->payment_status;
 
-	// take orderid from order to insert order items
-	$orderid = getOrderId($conn, $customerid);
+    // Extract shipping details from session
+    extract($_SESSION['ship']);
+    $cart = $_SESSION['cart'];
+    $total_price = $_SESSION['total_price'];
 
-	foreach($_SESSION['cart'] as $isbn => $qty){
-		$bookprice = getbookprice($isbn);
-		$query = "INSERT INTO order_items VALUES 
-		('$orderid', '$isbn', '$bookprice', '$qty')";
-		$result = mysqli_query($conn, $query);
-		if(!$result){
-			echo "Insert value false!" . mysqli_error($conn2);
-			exit;
-		}
-	}
+    // Save customer
+    $customerid = getCustomerId($name, $address, $city, $zip_code, $country);
+    if (!$customerid) {
+        $customerid = setCustomerId($name, $address, $city, $zip_code, $country);
+    }
 
-	session_unset();
-?>
-	<div class="alert alert-success rounded-0 my-4">Your order has been processed sucessfully. We'll be reaching you out to confirm your order. Thanks!</div>
+    // Save order
+    $date = date("Y-m-d H:i:s");
+    insertIntoOrder($conn, $customerid, $total_price, $date, $name, $address, $city, $zip_code, $country);
 
-<?php
-	if(isset($conn)){
-		mysqli_close($conn);
-	}
-	require_once "./template/footer.php";
+    // Get new order ID
+    $orderid = getOrderId($conn, $customerid);
+
+    // Save order items
+    foreach ($cart as $isbn => $qty) {
+        $bookprice = getbookprice($isbn);
+        $query = "INSERT INTO order_items (orderid, book_isbn, item_price, quantity) VALUES ('$orderid', '$isbn', '$bookprice', '$qty')";
+        $result = mysqli_query($conn, $query);
+        if (!$result) {
+            echo "Failed to insert order items: " . mysqli_error($conn);
+            exit;
+        }
+    }
+
+    // Save payment details
+    $stmt = $conn->prepare("INSERT INTO payments (order_id, stripe_payment_id, amount, currency, payment_status) VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param("isdss", $orderid, $stripe_payment_id, $amount, $currency, $payment_status);
+    $stmt->execute();
+    $stmt->close();
+
+    // Cleanup session
+    session_unset();
+    session_destroy();
+
+    // Display success message
+    require './template/header.php';
+    ?>
+    <div class="alert alert-success rounded-0 my-4">
+        <h4 class="text-success">Payment Successful!</h4>
+        <p>Your order has been processed. We'll be reaching out to confirm. Thanks for shopping!</p>
+    </div>
+    <?php
+    require './template/footer.php';
 ?>
