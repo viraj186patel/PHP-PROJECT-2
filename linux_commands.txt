@@ -1,0 +1,20 @@
+ls                                         // List files/folders in current directory
+ls -l                                      // List files with detailed information
+ls -a                                      // List hidden files as well
+ls -R                                      // List all files in sub-dir as well
+cd folder_name                             // change to the specified dir
+pwd                                        // Print the current working dir
+touch file.txt                             // Create an empty file
+mkdir myFolder                             // Create a new dir
+rm file.txt                                // Remove a file
+rm -r foldername                           // Remove dir and its content
+rm -f file.txt                             // Remove file forcefully
+cp file.txt newfile.txt                    // Copy files/folders
+mv file.txt /path/to/folder/               // Move or rename files/folders
+cat file.txt                               // display the content of a file
+nano file.txt                              // Open file in text editor
+clear                                      // Clear the terminal screen
+sudo command                               // Run command with admin(root) permission
+chmod                                      // Change permissions of files/folders
+history                                    // Get history of commands
+man comman_name                            // Get help for a command
