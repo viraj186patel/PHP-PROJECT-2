@@ -17,4 +17,4 @@ clear                                      // Clear the terminal screen
 sudo command                               // Run command with admin(root) permission
 chmod                                      // Change permissions of files/folders
 history                                    // Get history of commands
-man comman_name                            // Get help for a command
+man command_name                           // Get help for a command
