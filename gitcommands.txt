@@ -25,3 +25,10 @@ git clone URL			//make copy of a repo on our local repo to working on it
 git push origin -d branchname    	//delete a remote branch
 git update-index --assume-unchanged "local.conf"   //ignore specified file when commit
 git config --global credential.helper store     //The first time you push or pull, Git will ask for your username and password not everytime
+git revert <commit-id>                        //Revert a particular commit by creating new commit that undoes a previous one
+git reset filename                          //Reset the changes or unstage a file(undo git add)
+git stash                                     //Temporarily save changes without commiting
+git stash apply                             //Reapply changes from stash without deleting it
+git stash pop                            //Reapply changes from stash and delete it
+git cherry-pick <commit-id>                     //Copy a specific commit from one branch to another branch
+git rebase branchname                       //Reapply commits from one branch to top of another branch

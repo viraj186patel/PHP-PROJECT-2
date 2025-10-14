@@ -1,0 +1,97 @@
+## Project Setup & Installation
+composer global require laravel/installer                // Installs the Laravel installer globally (One time Setup)
+laravel new example-app                                  // Creates a new Laravel project using installer (Speed: Faster, Use for local development)
+composer create-project laravel/laravel example-app      // Creates a new Laravel project using composer  (Speed: Slower, Use for Production)
+
+## Basic App Commands
+php artisan list                                         // Lists all available Artisan commands
+php artisan serve                                        // Starts a local development server
+php artisan env                                          // Displays the current framework environment
+php artisan tinker                                       // Opens an interactive shell to interact with your application (test models, queries, and logic quickly)
+php artisan key:generate                                 // Generates a new APP_KEY in .env (used for encryption and sessions)
+php artisan storage:link                                 // Creates a symbolic link from public/storage to storage/app/public (uploads files are publicly accessible)
+php artisan down                                         // Puts the application into maintenance mode
+php artisan up                                           // Brings the application out of maintenance mode
+
+## Route commands
+php artisan route:list                                   // Lists all defined routes in your application with methods, URIs, and controllers
+php artisan route:cache                                  // Caches routes for better performance (only for non-closure routes)
+php artisan route:clear                                  // Clears the cached routes
+
+## Model Commands
+php artisan make:model Post                              // Creates a new model
+php artisan make:model Post -m                           // Creates a model with a migration file
+php artisan make:model Post -mfcr                        // Creates a model with Migration, Factory, Controller, and Resource
+
+## Controller Commands
+php artisan make:controller PostController               // Creates a new controller
+php artisan make:controller PostController --resource    // Creates a resource controller with pre-defined methods (index, create, store, show, edit, update, destroy)
+
+## Migration Commands
+php artisan make:migration create_posts_table            // Creates a new database migration file for the table
+php artisan migrate                                      // Runs all pending migrations
+php artisan migrate:rollback                             // Rolls back the last batch of migrations
+php artisan migrate:reset                                // Rolls back all migrations
+php artisan migrate:refresh                              // Rolls back and re-runs all migrations (resets only laravel tables)
+php artisan migrate:fresh                                // Drops all tables and re-runs all migrations (resets all tables)                    
+php artisan migrate:fresh --seed                         // Drops all tables, re-runs all migrations, and seeds data again
+
+## Seeder & Factory Commands
+php artisan make:seeder UserSeeder                       // Creates a new database seeder
+php artisan db:seed                                      // Runs all database seeders
+php artisan db:seed --class=UserSeeder                   // Runs a specific seeder class
+php artisan make:factory PostFactory                     // Creates a new model factory for fake data
+
+## Config & Cache Commands
+php artisan config:cache                                 // Combines all config files into one cached file for faster performance
+php artisan config:clear                                 // Clears the cached config files
+php artisan view:cache                                   // Compiles and caches all Blade view files for faster performance
+php artisan view:clear                                   // Clears the compiled Blade Views
+php artisan cache:clear                                  // Clears the application cache
+php artisan optimize:clear                               // Clears all caches (route, view, config, etc)
+php artisan optimize                                     // Compiles common classes and optimizes performance (for production)
+
+## Usefull Commands
+php artisan make:middleware CheckAge                     // Creates a new middleware class
+php artisan make:request StorePostRequest                // Creates a custom request for form validation
+php artisan make:resource PostResource                   // Creates an API resource for formatting JSON responses
+php artisan make:policy PostPolicy                       // Creates a policy class for authorization
+php artisan make:observer PostObserver                   // Creates an observer to handle model events like creating/updating/deleting
+php artisan make:component Alert                         // Creates a reusable Blade component (used in frontend views)
+php artisan make:mail OrderEmail                         // Creates a new Mailable class for sending emails
+php artisan make:scope UserScope                         // Creates a reusable global query scope for filtering model queries
+
+## Event & Listener Commands
+php artisan make:event OrderPlaced                       // Creates a new event
+php artisan make:listener SendOrderNotification          // Creates a new listener for handling an event
+php artisan event:generate                               // Generates missing event and listener classes
+php artisan event:cache                                  // Caches event and listener mappings for faster boot
+php artisan event:clear                                  // Clears cached event and listener mappings
+
+## Job & Queue Commands
+php artisan make:job ProcessEmailJob                     // Creates a queued job for background processing
+php artisan queue:work                                   // Starts processing queued jobs
+php artisan queue:listen                                 // Listens for queue jobs in real-time
+php artisan queue:failed                                 // Lists failed jobs
+php artisan queue:retry {id}                             // Retries a failed job by its ID
+
+## Schedule Commands
+php artisan make:command CustomCommand                   // Creates a custom Artisan command
+php artisan schedule:run                                 // Executes scheduled tasks defined in app/Console/Kernel.php
+php artisan schedule:list                                // Lists all scheduled tasks
+
+## Authentication
+composer require laravel/breeze --dev                    // Installs Laravel Breeze starter kit
+php artisan breeze:install                               // Installs Breeze authentication scaffolding
+
+## Testing Commands
+php artisan make:test UserTest                           // Creates a new test file
+php artisan test                                         // Runs all tests
+php artisan test --filter=UserTest                       // Runs a specific test only
+
+## Composer Commands
+composer install                                         // Installs all dependencies listed in composer.lock
+composer update                                          // Updates dependencies to their latest versions allowed in composer.json
+composer require package/name                            // Adds a new package to your project
+composer remove package/name                             // Removes a package from your project
+composer dump-autoload                                   // Regenerates the autoloader files, useful after adding/deleting classes(when files are added/deleted)
